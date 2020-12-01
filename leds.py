@@ -21,7 +21,7 @@ pixels = neopixel.NeoPixel(
 app=Flask(__name__)
 
 def allColor(red, green, blue):
-	pixels.fill((int(red), int(green), int(blue)))
+	pixels.fill((red, green, blue))
 	pixels.show()
 
 @app.route("/")
@@ -34,7 +34,7 @@ def set_color():
 	red = rgb['r']
 	green = rgb['g']
 	blue = ['b']
-	allColor(int(red), int(green), int(blue))
+	allColor(red, green, blue)
 	return render_template('index.html'), 204
 
 if __name__ == "__main__":
