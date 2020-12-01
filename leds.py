@@ -34,7 +34,7 @@ def set_color():
 	red = rgb['r']
 	green = rgb['g']
 	blue = ['b']
-	allColor(red, green, blie)
+	allColor(red, green, blue)
 	return render_template('index.html'), 204
 
 if __name__ == "__main__":
