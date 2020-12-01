@@ -33,7 +33,7 @@ def set_color():
 	rgb = request.get_json()
 	red = rgb['r']
 	green = rgb['g']
-	blue['b']
+	blue = ['b']
 	allColor(red, green, blie)
 	return render_template('index.html'), 204
 
