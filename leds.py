@@ -1,24 +1,28 @@
 from flask import Flask, render_template, request
-from neopixel import *
+import time
+import board
+import neopixel
 
-# LED strip configuration:
-LED_COUNT   = 60     # Number of LED pixels.
-LED_PIN     = 18      # GPIO pin connected to the pixels (must support PWM!).
-LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
-LED_DMA     = 5       # DMA channel to use for generating signal (try 5)
-LED_INVERT  = False   # True to invert the signal (when using NPN transistor level shift)
+# Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
+# NeoPixels must be connected to D10, D12, D18 or D21 to work.
+pixel_pin = board.D18
+
+# The number of NeoPixels
+num_pixels = 150
+
+# The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
+# For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
+ORDER = neopixel.GRB
+
+pixels = neopixel.NeoPixel(
+    pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
+)
 
 app=Flask(__name__)
 
-# Create NeoPixel object with appropriate configuration.
-strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT)
-# Intialize the library (must be called once before other functions).
-strip.begin()
-
-def allColor(strip, color):
-	for i in range(strip.numPixels()):
-		strip.setPixelColor(i, color)
-	strip.show()
+def allColor(red, green, blue):
+	pixels.fill((red, green, blue))
+	pixels.show()
 
 @app.route("/")
 def index():
@@ -27,7 +31,10 @@ def index():
 @app.route("/set_color", methods=['POST'])
 def set_color():
 	rgb = request.get_json()
-	allColor(strip, Color(rgb['r'], rgb['g'], rgb['b']))
+	red = rgb['r']
+	green = rgb['g']
+	blue = rgb['b']
+	allColor(red, green, blue)
 	return render_template('index.html'), 204
 
 if __name__ == "__main__":
